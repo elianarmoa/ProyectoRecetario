@@ -14,8 +14,17 @@ const Home = () => {
   const mealsPerPage = 10;
 
   const { favorites, saveFavorite, removeFavorite, addSearchHistory } = useContext(UserPreferencesContext);
-
   const [randomRecipe, setRandomRecipe] = useState(null);
+
+  // Estado para el modo oscuro
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("darkMode") === "true"; // Recuperar del localStorage
+  });
+
+  useEffect(() => {
+    document.body.classList.toggle("dark-mode", darkMode); // Aplicar la clase al <body>
+    localStorage.setItem("darkMode", darkMode); // Guardar preferencia en localStorage
+  }, [darkMode]);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -25,7 +34,7 @@ const Home = () => {
         const data = await response.json();
 
         if (data.meals) {
-          setMeals(data.meals.slice(0, 50)); // Tomamos hasta 50 recetas
+          setMeals(data.meals.slice(0, 50));
         } else {
           setMeals([]);
         }
@@ -46,41 +55,36 @@ const Home = () => {
     fetchRandomRecipe();
   }, []);
 
-  // Filtramos las recetas según el término de búsqueda
   const filteredMeals = meals.filter(meal =>
     meal.strMeal.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Calculamos las páginas disponibles después de filtrar
   const totalPages = Math.ceil(filteredMeals.length / mealsPerPage);
-
-  // Calcular los índices para la paginación
   const indexOfLastMeal = currentPage * mealsPerPage;
   const indexOfFirstMeal = indexOfLastMeal - mealsPerPage;
-
-  // Paginamos las recetas filtradas
   const currentMeals = filteredMeals.slice(indexOfFirstMeal, indexOfLastMeal);
 
-  // Manejamos el cambio de página
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
 
-  // Cuando cambia el término de búsqueda, reseteamos la página
   useEffect(() => {
-    setCurrentPage(1); // Siempre resetear a la página 1 al cambiar el término de búsqueda
-
-    // Si la página actual es mayor que el total de páginas después de la búsqueda, la ajustamos
+    setCurrentPage(1);
     if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(totalPages);
     }
   }, [searchTerm, totalPages]);
 
   return (
-    <div className="home-container">
-      <Header /> {}
+    <div className={`home-container ${darkMode ? "dark" : ""}`}>
+      <Header />
+
+      {/* Botón para cambiar a Dark Mode */}
+      <button className="dark-mode-toggle" onClick={() => setDarkMode(!darkMode)}>
+        {darkMode ? "☀️ Modo Claro" : "🌙 Modo Oscuro"}
+      </button>
 
       <div className="content">
         <h1>Lista de Comidas</h1>
@@ -102,7 +106,6 @@ const Home = () => {
           <p>Cargando comidas...</p>
         ) : (
           <>
-            {/* Mostrar recetas favoritas */}
             <div className="favorites-section">
               <h2>Favoritos</h2>
               <div className="meal-grid">
@@ -134,7 +137,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Mostrar recetas filtradas */}
             <div className="meal-grid">
               {currentMeals.length === 0 ? (
                 <p>No se encontraron recetas</p>
@@ -163,7 +165,6 @@ const Home = () => {
               )}
             </div>
 
-            {/* Paginación */}
             <div className="pagination">
               <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                 Anterior
@@ -174,7 +175,6 @@ const Home = () => {
               </button>
             </div>
 
-            {/* Receta Aleatoria */}
             {randomRecipe && (
               <div className="random-recipe">
                 <h2>Receta Aleatoria</h2>
@@ -187,7 +187,7 @@ const Home = () => {
         )}
       </div>
 
-      <Footer /> {}
+      <Footer />
     </div>
   );
 };
