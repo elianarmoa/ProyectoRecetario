@@ -1,0 +1,304 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+:root {
+  --font-family: 'Roboto', sans-serif;
+  --background-color: #f9f2f1; /* Beige claro de fondo */
+  --text-color: #333;
+  --highlight-color: #ff6600;
+  --button-hover-color: #e53e3e;
+  --button-active-color: #32cd32; /* Verde cuando es favorito */
+  --primary-font-size: 1rem;
+  --button-padding: 10px 16px;
+  --button-radius: 5px;
+  --meal-card-hover-shadow: rgba(0, 0, 0, 0.2);
+  --meal-card-hover-transform: scale(1.05);
+  --meal-card-transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Definir fuente y fondo básico */
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0; 
+  padding: 0; 
+  min-height: 100vh; 
+}
+
+/* Contenedor del grid con 2 filas y 5 columnas fijas */
+.meal-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+  grid-template-rows: repeat(2, auto); 
+  grid-gap: 20px;
+  padding: 20px;
+  justify-content: center;
+  margin-top: 20px; 
+  margin-bottom: 20px; 
+}
+
+/* Media query para responsividad: Adaptar la grid a diferentes tamaños */
+@media (max-width: 1200px) {
+  .meal-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas */
+  }
+}
+
+@media (max-width: 900px) {
+  .meal-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+  }
+}
+
+@media (max-width: 600px) {
+  .meal-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+  }
+}
+
+/* Estilo de las tarjetas */
+.meal-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Se asegura altura uniforme */
+  transition: var(--meal-card-transition);
+}
+
+.meal-card:hover {
+  transform: var(--meal-card-hover-transform); 
+  box-shadow: 0 6px 15px var(--meal-card-hover-shadow);
+}
+
+/* Contenedor para las imágenes dentro de la tarjeta */
+.meal-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+/* Efecto de agrandamiento en la imagen al pasar el ratón */
+.meal-card:hover img {
+  transform: scale(1.1);
+}
+
+/* Contenedor de botones para alineación */
+.meal-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Botón de paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background-color: var(--highlight-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: var(--button-radius);
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Título principal */
+.home-container h1 {
+  text-align: center;
+  margin: 20px;
+  font-size: 2rem;
+  color: var(--text-color);
+  background-color: #ffcc00;
+  padding: 10px 0;
+  border-radius: 8px;
+}
+
+/* Estilo para el texto de carga */
+.home-container p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.search-bar input {
+  padding: 10px;
+  width: 80%;
+  max-width: 400px;
+  border: 2px solid #d18b8b;
+  border-radius: 8px;
+  font-size: var(--primary-font-size);
+  transition: border-color 0.3s ease;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #9c4c4c;
+}
+
+.search-bar input::placeholder {
+  color: #aaa;
+}
+
+/* Contenedor de botones de favoritos y detalles */
+.favorite-btn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  gap: 10px; 
+  width: 100%;
+}
+
+/* Estilo del botón de detalles */
+.details-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #5cb85c;
+  color: white;
+  text-decoration: none;
+  border-radius: var(--button-radius);
+  transition: background-color 0.3s ease;
+  flex: 1;
+  text-align: center;
+}
+
+.details-link:hover {
+  background-color: #4cae4c;
+}
+
+/* Estilo del botón de favoritos */
+.favorite-btn {
+  background-color: #ff6347; 
+  color: #fff; 
+  border: none;
+  padding: var(--button-padding);
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: var(--button-radius);
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1; 
+}
+
+.favorite-btn:hover {
+  background-color: var(--button-hover-color);
+  transform: scale(1.05);
+}
+
+.favorite-btn:focus {
+  outline: none;
+}
+
+.favorite-btn.active {
+  background-color: var(--button-active-color); /* Verde cuando es favorito */
+}
+
+.favorite-btn .heart-icon {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+/* Estilo de la receta aleatoria */
+.random-recipe {
+  background-color: #ffffff;
+  padding: 20px;
+  margin: 40px auto;  
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 800px; 
+  width: 90%; 
+}
+
+/* Títulos y texto dentro de la receta */
+.random-recipe h2 {
+  font-size: 2rem; 
+  margin-bottom: 20px;  
+  color: var(--highlight-color);
+}
+
+.random-recipe img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+.random-recipe h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--text-color);
+}
+
+.random-recipe p {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+/* Estilo de los ingredientes dentro de la receta */
+.random-recipe .ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.random-recipe .ingredient {
+  background-color: #f8f8f8;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  width: 120px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.random-recipe .ingredient img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.random-recipe .ingredient p {
+  font-size: 1rem;
+  color: var(--text-color);
+}
